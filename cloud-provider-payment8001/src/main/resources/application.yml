@@ -19,6 +19,8 @@ eureka:
   instance:
     instance-id: payment8001
     prefer-ip-address: true
+    # 受到最后一次心跳后等待时间上限，默认是90秒，超时就删除服务
+    lease-renewal-interval-in-seconds: 30
   client:
     # 表示是否将自己注册进EurekaService
     register-with-eureka: true
