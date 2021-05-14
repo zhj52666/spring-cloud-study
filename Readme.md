@@ -15,7 +15,7 @@
 - 全链路追踪
 - 自动化构建部署
 - 服务定时任务调度操作
-## 1. SpringCloud 架构选型
+## 1 SpringCloud 架构选型
 官网可以查看SpringBoot与SpringCloud对应版本
 https://start.spring.io/actuator/info
 ### 本项目框架版本选型
@@ -29,3 +29,7 @@ https://start.spring.io/actuator/info
 - 被动修复bug
 - 不再接受合并请求
 - 不再发布新版本
+## 2 注册中心
+> 便于服务的统一调度和管理
+### 2.1 Eureka
+注册中心可以配置集群，避免单点故障
