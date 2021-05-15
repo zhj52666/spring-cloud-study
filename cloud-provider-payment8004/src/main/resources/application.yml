@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cloud-payment-service
+    name: cloud-provider-payment
   cloud:
     zookeeper:
       connect-string: aliyun:2181

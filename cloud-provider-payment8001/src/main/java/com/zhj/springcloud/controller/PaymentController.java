@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhj
@@ -62,11 +63,27 @@ public class PaymentController {
             log.info("*******service" + service);
         }
         result.put("services", services);
-        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-provider-payment");
         for (ServiceInstance instance : instances) {
             log.info("******instance" + instance);
         }
         result.put("instances", instances);
         return CommonResult.success(result);
     }
+
+    @GetMapping("/getLB")
+    public CommonResult getLB() {
+        return CommonResult.success(serverPort);
+    }
+
+    @GetMapping("feign/timeout")
+    public String paymentFeignTimeout() {
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return serverPort;
+    }
+
 }

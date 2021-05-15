@@ -33,3 +33,57 @@ https://start.spring.io/actuator/info
 > 便于服务的统一调度和管理
 ### 2.1 Eureka
 注册中心可以配置集群，避免单点故障
+### 2.2 Zookeeper
+> Zookeeper是一个分布式协调工具,可以实现注册中心功能
+
+zookeeper 可以代替 eureka 成为springCloud的注册中心
+
+### 2.3 Consul
+docker 安装启动 Consul
+```bash
+$ docker pull consul # 默认拉取latest
+$ docker pull consul:1.6.1 # 拉取指定版本
+docker run -d -p 8500:8500 --restart=always --name=consul consul:latest agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
+```
+参数
+- agent: 表示启动 Agent 进程。
+- server：表示启动 Consul Server 模式
+- client：表示启动 Consul Cilent 模式。
+- bootstrap：表示这个节点是 Server-Leader ，每个数据中心只能运行一台服务器。技术角度上讲 Leader 是通过 Raft 算法选举的，但是集群第一次启动时需要一个引导 Leader，在引导群集后，建议不要使用此标志。
+- ui：表示启动 Web UI 管理器，默认开放端口 8500，所以上面使用 Docker 命令把 8500 端口对外开放。
+- node：节点的名称，集群中必须是唯一的，默认是该节点的主机名。
+- client：consul服务侦听地址，这个地址提供HTTP、DNS、RPC等服务，默认是127.0.0.1所以不对外提供服务，如果你要对外提供服务改成0.0.0.0
+- join：表示加入到某一个集群中去。 如：-json=192.168.0.11。
+### 2.4 三者之间的区别
+> CAP Consistency代表强一致性 Availability代表可用性 Partition tolerance分区容错性（分布式必备）
+CAP 只能满足两种
+- AP(Eureka)
+- CP(Zookeeper、Consul)
+
+## 3 负载均衡
+- LB负载均衡
+
+简单的说就是将用户的请求平摊的分配到多个服务上，从而达到系统的HA(高可用)
+常见的负载均衡软件Nginx、LVS，硬件F5等
+
+- Ribbon 本地负载均衡与Nginx的区别
+
+Nginx 是服务端实现的负载均衡，nginx 可以转发请求
+Ribbon 本地负载均衡，是在调用微服务接口，会从注册中心获取服务信息列表缓存在JVM.从而在本地实现RPC远程服务调用技术
+### 3.1 Ribbon 
+Eureka 默认包含Ribbon的依赖，可以实现默认轮询的负载均衡机制
+更改默认的负载均衡，需要在spring 包扫描范围之外配置，然后在启动类加注解引入
+
+### 3.2 OpenFeign
+编写 java 客户端变得容易。
+前面在使用Ribbon+RestTemplate,使用RestTemplate对http请求的封装。
+Feign是一个声明实的客服端，让编写Web服务客户端变得非常容易，只需要在接口上添加对应注解即可
+
+## 4 熔断降级
+- 服务降级 服务调用失败给出友好的反馈
+  1. 程序运行异常
+  2. 超时
+  3. 服务熔断触发降级
+  4. 线程池/信号量 打满
+- 服务熔断 达到最大访问后，拒绝服务，拉闸限电
+- 服务限流 秒杀高并发，避免一窝蜂打入，排队获取请求
