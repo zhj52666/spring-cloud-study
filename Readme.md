@@ -9,7 +9,7 @@
 - 服务降级
 - 服务消息队列
 - 配置中心管理 （Nacos、Config）
-- 服务网关 （GetWay、Zuul(分裂Zuul2)）
+- 服务网关 （Gateway、Zuul(分裂Zuul2)）
 - 服务总线 （Nacos、Bus(停更)）
 - 服务监控
 - 全链路追踪
@@ -87,3 +87,22 @@ Feign是一个声明实的客服端，让编写Web服务客户端变得非常容
   4. 线程池/信号量 打满
 - 服务熔断 达到最大访问后，拒绝服务，拉闸限电
 - 服务限流 秒杀高并发，避免一窝蜂打入，排队获取请求
+
+## 5 网关
+### 5.1 Gateway
+SpringCloud Gateway使用的是Webflux中的reactor-netty响应式编程组件,底层使用了Netty通讯框架
+Gateway特性
+- 动态路由：能够匹配任何请求属性
+- 可以对路由指定Predicate(断言)和Filter(过滤器)
+- 集成Hystrix 断路器功能
+- 集成Spring Cloud 服务发现功能
+- 易于编写Predicate(断言)和Filter(过滤器)
+- 请求限流
+
+三大核心概念 
+1. Route(路由) 路由是构建网关的基本模块,它由ID,目标URI,一系列的断言和过滤器组成,如断言为true则匹配该路由
+2. Predicate(断言) 
+   参考的是Java8的java.util.function.Predicate
+   开发人员可以匹配HTTP请求中的所有内容(例如请求头或请求参数),如果请求与断言相匹配则进行路由
+3. Filter(过滤)
+   指的是Spring框架中GatewayFilter的实例,使用过滤器,可以在请求被路由前或者之后对请求进行修改.
