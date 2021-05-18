@@ -116,3 +116,7 @@ config 实现配置中心加配置客户端  可以实现读取github等平台�
 ### 7.1 Stream
 - 为什么使用 ？
   屏蔽底层消息中间件的差异，降低切换成本，统一消息的编程模型
+  
+Binder 绑定器连接消息中间件，屏蔽差异 Input消费者，Output生产者
+Channel：通道，是队列Queue的一种抽象，在消息通讯系统中就是实现存储和转发的媒介，通过channel对队列进行配置
+Source和Sink：简单的可理解为参照对象是Springcloud Stream自身，从Stream发布消息就是输出，接受消息就是输入
