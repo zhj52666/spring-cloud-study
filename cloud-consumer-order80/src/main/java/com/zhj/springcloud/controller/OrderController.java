@@ -65,4 +65,9 @@ public class OrderController {
             return CommonResult.error("调用失败！");
         }
     }
+
+    @GetMapping("/zipkin")
+    public String paymentZipkin() {
+        return restTemplate.getForObject(PAYMENT_URL + "/zipkin", String.class);
+    }
 }

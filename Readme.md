@@ -54,12 +54,16 @@ docker run -d -p 8500:8500 --restart=always --name=consul consul:latest agent -s
 - node：节点的名称，集群中必须是唯一的，默认是该节点的主机名。
 - client：consul服务侦听地址，这个地址提供HTTP、DNS、RPC等服务，默认是127.0.0.1所以不对外提供服务，如果你要对外提供服务改成0.0.0.0
 - join：表示加入到某一个集群中去。 如：-json=192.168.0.11。
-### 2.4 三者之间的区别
+### 2.4 Nacos
+> Name Config Service 代替注册中心，配置中心
+
+### 2.5 四者之间的区别
 > CAP Consistency代表强一致性 Availability代表可用性 Partition tolerance分区容错性（分布式必备）
 CAP 只能满足两种
 - AP(Eureka)
 - CP(Zookeeper、Consul)
-
+- AP和CP都支持的(Nacos)
+  ![注册中心区别](https://img-blog.csdnimg.cn/20210518224616690.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3poajUyNjY2,size_16,color_FFFFFF,t_70)
 ## 3 负载均衡
 - LB负载均衡
 
@@ -112,7 +116,7 @@ Gateway特性
 config 实现配置中心加配置客户端  可以实现读取github等平台仓库内的配置文件
 加入bus 是因为客户端无法实时获取修改后的配置，需要消息总线进行通知刷新（不使用bus只能一个客户端一个客户端的通知）
 
-## 7.消息驱动
+## 7 消息驱动
 ### 7.1 Stream
 - 为什么使用 ？
   屏蔽底层消息中间件的差异，降低切换成本，统一消息的编程模型
@@ -120,3 +124,9 @@ config 实现配置中心加配置客户端  可以实现读取github等平台�
 Binder 绑定器连接消息中间件，屏蔽差异 Input消费者，Output生产者
 Channel：通道，是队列Queue的一种抽象，在消息通讯系统中就是实现存储和转发的媒介，通过channel对队列进行配置
 Source和Sink：简单的可理解为参照对象是Springcloud Stream自身，从Stream发布消息就是输出，接受消息就是输入
+
+## 8 分布式链路跟踪
+### 8.1 Sleuth
+- 安装zipkin： docker run -d -p 9411:9411 openzipkin/zipkin
+
+Sleuth提供了一套完整的服务跟踪的解决方案，在分布式系统中提供追踪解决方案并且兼容支持了zipkin
