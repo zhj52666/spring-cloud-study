@@ -56,7 +56,7 @@ docker run -d -p 8500:8500 --restart=always --name=consul consul:latest agent -s
 - join：表示加入到某一个集群中去。 如：-json=192.168.0.11。
 ### 2.4 Nacos
 > Name Config Service 代替注册中心，配置中心
-
+集群部署： 借助nginx 进行负载
 ### 2.5 四者之间的区别
 > CAP Consistency代表强一致性 Availability代表可用性 Partition tolerance分区容错性（分布式必备）
 CAP 只能满足两种
